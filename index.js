@@ -252,7 +252,7 @@ var FirefoxDriver = {
 
         // connect to the marionette socket server
         def.promise
-            .then(this.webDriverServer.connect.bind(this.webDriverServer, this.getPort()))
+            .then(this.webDriverServer.connect.bind(this.webDriverServer, this.getPort(), this.getHost()))
             .then(this.marionette.connect.bind(this.marionette, this.getMarionettePort()))
             .then(function () {
                     deferred.resolve();
