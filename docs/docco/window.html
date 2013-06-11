@@ -1,0 +1,272 @@
+<!DOCTYPE html>  <html> <head>   <title>window.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="index.html">                 index.js               </a>                                           <a class="source" href="cookie.html">                 cookie.js               </a>                                           <a class="source" href="element.html">                 element.js               </a>                                           <a class="source" href="execute.html">                 execute.js               </a>                                           <a class="source" href="frame.html">                 frame.js               </a>                                           <a class="source" href="ime.html">                 ime.js               </a>                                           <a class="source" href="interaction.html">                 interaction.js               </a>                                           <a class="source" href="page.html">                 page.js               </a>                                           <a class="source" href="screenshot.html">                 screenshot.js               </a>                                           <a class="source" href="session.html">                 session.js               </a>                                           <a class="source" href="storage.html">                 storage.js               </a>                                           <a class="source" href="timeout.html">                 timeout.js               </a>                                           <a class="source" href="url.html">                 url.js               </a>                                           <a class="source" href="window.html">                 window.js               </a>                                           <a class="source" href="cookie.html">                 cookie.js               </a>                                           <a class="source" href="element.html">                 element.js               </a>                                           <a class="source" href="execute.html">                 execute.js               </a>                                           <a class="source" href="frame.html">                 frame.js               </a>                                           <a class="source" href="ime.html">                 ime.js               </a>                                           <a class="source" href="interaction.html">                 interaction.js               </a>                                           <a class="source" href="log.html">                 log.js               </a>                                           <a class="source" href="page.html">                 page.js               </a>                                           <a class="source" href="screenshot.html">                 screenshot.js               </a>                                           <a class="source" href="session.html">                 session.js               </a>                                           <a class="source" href="storage.html">                 storage.js               </a>                                           <a class="source" href="timeout.html">                 timeout.js               </a>                                           <a class="source" href="url.html">                 url.js               </a>                                           <a class="source" href="window.html">                 window.js               </a>                                           <a class="source" href="marionette.html">                 marionette.js               </a>                                           <a class="source" href="webdriver.html">                 webdriver.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               window.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*!</span>
+<span class="cm"> *</span>
+<span class="cm"> * Copyright (c) 2013 Sebastian Golasch</span>
+<span class="cm"> *</span>
+<span class="cm"> * Permission is hereby granted, free of charge, to any person obtaining a</span>
+<span class="cm"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span>
+<span class="cm"> * to deal in the Software without restriction, including without limitation</span>
+<span class="cm"> * the rights to use, copy, modify, merge, publish, distribute, sublicense,</span>
+<span class="cm"> * and/or sell copies of the Software, and to permit persons to whom the</span>
+<span class="cm"> * Software is furnished to do so, subject to the following conditions:</span>
+<span class="cm"> *</span>
+<span class="cm"> * The above copyright notice and this permission notice shall be included</span>
+<span class="cm"> * in all copies or substantial portions of the Software.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS</span>
+<span class="cm"> * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="cm"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="cm"> * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="cm"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING</span>
+<span class="cm"> * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER</span>
+<span class="cm"> * DEALINGS IN THE SOFTWARE.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Window related WebDriver endpoints</span>
+<span class="cm"> * see [JsonWireProtocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol)</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module FirefoxDriver</span>
+<span class="cm"> * @class Window</span>
+<span class="cm"> * @namespace FirefoxDriver.Commands.WebDriver</span>
+<span class="cm"> */</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">Driver</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Retrieve the current window handle.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method windowHandle</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/window_handle</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;windowHandle&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window_handle&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Retrieve the list of all window handles available to the session.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method windowHandles</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/window_handles</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;windowHandles&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window_handles&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Change focus to another window.</span>
+<span class="cm">   * The window to change focus to may be specified by its server assigned window handle, or by the value of its name attribute.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method changeWindow</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/window</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;changeWindow&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;name&#39;</span><span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Close the current window.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method closeWindow</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#DELETE_/session/:sessionId/window</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;closeWindow&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;del&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Change the size of the specified window.</span>
+<span class="cm">   * If the :windowHandle URL parameter is &quot;current&quot;, the currently active window will be resized.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method windowSize</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/window/:windowHandle/size</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {GET} windowHandle ID of the window to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;windowSize&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window/:windowHandle/size&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">width</span><span class="o">:</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="s1">&#39;height&#39;</span><span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Get the size of the specified window.</span>
+<span class="cm">   * If the :windowHandle URL parameter is &quot;current&quot;, the size of the currently active window will be returned.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method getWindowSize</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/window/:windowHandle/size</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {GET} windowHandle ID of the window to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;getWindowSize&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window/:windowHandle/size&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+
+  <span class="cm">/**</span>
+<span class="cm">   * Change the position of the specified window.</span>
+<span class="cm">   * If the :windowHandle URL parameter is &quot;current&quot;, the currently active window will be moved.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method windowPosition</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/window/:windowHandle/position</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {GET} windowHandle ID of the window to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;windowPosition&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window/:windowHandle/position&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">x</span><span class="o">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="s1">&#39;y&#39;</span><span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Get the position of the specified window.</span>
+<span class="cm">   * If the :windowHandle URL parameter is &quot;current&quot;, the position of the currently active window will be returned.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method getWindowPosition</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/window/:windowHandle/position</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {GET} windowHandle ID of the window to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;getWindowPosition&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window/:windowHandle/position&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Maximize the specified window if not already maximized.</span>
+<span class="cm">   * If the :windowHandle URL parameter is &quot;current&quot;, the currently active window will be maximized.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method windowMaximize</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/window/:windowHandle/position</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {GET} windowHandle ID of the window to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;windowMaximize&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/window/:windowHandle/maximize&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Get the current browser orientation.</span>
+<span class="cm">   * The server should return a valid orientation value {LANDSCAPE|PORTRAIT}.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method getOrientation</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/orientation</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;getOrientation&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/orientation&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Set the browser orientation.</span>
+<span class="cm">   * Must be one of the two values {LANDSCAPE|PORTRAIT}.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method orientation</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/orientation</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {POST} orientation The new browser orientation {LANDSCAPE|PORTRAIT}.</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;orientation&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/orientation&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">orientation</span><span class="o">:</span> <span class="s1">&#39;orientation&#39;</span><span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Gets the text of the currently displayed JavaScript alert(), confirm(), or prompt() dialog.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method dialogText</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId/alert_text</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;dialogText&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/alert_text&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Sends keystrokes to a JavaScript prompt() dialog.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method alertText</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/alert_text</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   * @param {POST} text Keystrokes to send to the prompt() dialog.</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;setDialogText&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/alert_text&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;text&#39;</span><span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Accepts the currently displayed alert dialog.</span>
+<span class="cm">   * Usually, this is equivalent to clicking on the &#39;OK&#39; button in the dialog.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method acceptDialog</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/accept_alert</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;acceptDialog&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/accept_alert&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Dismisses the currently displayed alert dialog.</span>
+<span class="cm">   * For confirm() and prompt() dialogs, this is equivalent to clicking the &#39;Cancel&#39; button.</span>
+<span class="cm">   * For alert() dialogs, this is equivalent to clicking the &#39;OK&#39; button.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method dismissDialog</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session/:sessionId/dismiss_alert</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;dismissDialog&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId/dismiss_alert&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span>
+  <span class="p">});</span>
+
+<span class="p">};</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

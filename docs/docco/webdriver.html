@@ -1,0 +1,148 @@
+<!DOCTYPE html>  <html> <head>   <title>webdriver.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="index.html">                 index.js               </a>                                           <a class="source" href="cookie.html">                 cookie.js               </a>                                           <a class="source" href="element.html">                 element.js               </a>                                           <a class="source" href="execute.html">                 execute.js               </a>                                           <a class="source" href="frame.html">                 frame.js               </a>                                           <a class="source" href="ime.html">                 ime.js               </a>                                           <a class="source" href="interaction.html">                 interaction.js               </a>                                           <a class="source" href="page.html">                 page.js               </a>                                           <a class="source" href="screenshot.html">                 screenshot.js               </a>                                           <a class="source" href="session.html">                 session.js               </a>                                           <a class="source" href="storage.html">                 storage.js               </a>                                           <a class="source" href="timeout.html">                 timeout.js               </a>                                           <a class="source" href="url.html">                 url.js               </a>                                           <a class="source" href="window.html">                 window.js               </a>                                           <a class="source" href="cookie.html">                 cookie.js               </a>                                           <a class="source" href="element.html">                 element.js               </a>                                           <a class="source" href="execute.html">                 execute.js               </a>                                           <a class="source" href="frame.html">                 frame.js               </a>                                           <a class="source" href="ime.html">                 ime.js               </a>                                           <a class="source" href="interaction.html">                 interaction.js               </a>                                           <a class="source" href="log.html">                 log.js               </a>                                           <a class="source" href="page.html">                 page.js               </a>                                           <a class="source" href="screenshot.html">                 screenshot.js               </a>                                           <a class="source" href="session.html">                 session.js               </a>                                           <a class="source" href="storage.html">                 storage.js               </a>                                           <a class="source" href="timeout.html">                 timeout.js               </a>                                           <a class="source" href="url.html">                 url.js               </a>                                           <a class="source" href="window.html">                 window.js               </a>                                           <a class="source" href="marionette.html">                 marionette.js               </a>                                           <a class="source" href="webdriver.html">                 webdriver.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               webdriver.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*!</span>
+<span class="cm"> *</span>
+<span class="cm"> * Copyright (c) 2013 Sebastian Golasch</span>
+<span class="cm"> *</span>
+<span class="cm"> * Permission is hereby granted, free of charge, to any person obtaining a</span>
+<span class="cm"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span>
+<span class="cm"> * to deal in the Software without restriction, including without limitation</span>
+<span class="cm"> * the rights to use, copy, modify, merge, publish, distribute, sublicense,</span>
+<span class="cm"> * and/or sell copies of the Software, and to permit persons to whom the</span>
+<span class="cm"> * Software is furnished to do so, subject to the following conditions:</span>
+<span class="cm"> *</span>
+<span class="cm"> * The above copyright notice and this permission notice shall be included</span>
+<span class="cm"> * in all copies or substantial portions of the Software.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS</span>
+<span class="cm"> * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="cm"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="cm"> * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="cm"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING</span>
+<span class="cm"> * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER</span>
+<span class="cm"> * DEALINGS IN THE SOFTWARE.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>ext. libs</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">Q</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Firefox Autotest (Marionette)</span>
+<span class="cm"> * WebDriver handler &amp; request executor</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module FirefoxDriver</span>
+<span class="cm"> * @class WebDriverServer</span>
+<span class="cm"> * @namespace FirefoxDriver</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Configures the express server</span>
+<span class="cm"> * Prepares the object properties</span>
+<span class="cm"> * Loads the webdriver commands</span>
+<span class="cm"> *</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param {EventEmitter} events</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">WebDriverServer</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">events</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>store events</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">events</span> <span class="o">=</span> <span class="nx">events</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>placeholder for the webdriver server port &amp; host</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">port</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">host</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>configure express</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">bodyParser</span><span class="p">());</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>load the commands</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">_loadCommands</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Opens the WebDriverServer port</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method connect</span>
+<span class="cm"> * @param {integer} webdriverPort</span>
+<span class="cm"> * @return {Q.promise} promise</span>
+<span class="cm"> * @public</span>
+<span class="cm"> */</span>
+
+<span class="nx">WebDriverServer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">connect</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">webdriverPort</span><span class="p">,</span> <span class="nx">webdriverHost</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">deferred</span> <span class="o">=</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">defer</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>store host &amp; port</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">port</span> <span class="o">=</span> <span class="nx">webdriverPort</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">host</span> <span class="o">=</span> <span class="nx">webdriverHost</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>start the webdriver server</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">listener</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">webdriverPort</span><span class="p">,</span> <span class="nx">deferred</span><span class="p">.</span><span class="nx">resolve</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">deferred</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Closes the webdriver server port &amp; cleans up</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method kill</span>
+<span class="cm"> * @return {Q.promise} promise</span>
+<span class="cm"> * @public</span>
+<span class="cm"> */</span>
+
+<span class="nx">WebDriverServer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">kill</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">deferred</span> <span class="o">=</span> <span class="nx">Q</span><span class="p">.</span><span class="nx">defer</span><span class="p">();</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">listener</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">deferred</span><span class="p">.</span><span class="nx">resolve</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">deferred</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Generates a function for every webdriver command</span>
+<span class="cm"> * and an express route endpoint</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method addCommand</span>
+<span class="cm"> * @param {object} command</span>
+<span class="cm"> * @return {object} command</span>
+<span class="cm"> * @public</span>
+<span class="cm"> */</span>
+
+<span class="nx">WebDriverServer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addCommand</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">command</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>bind the command callback (on request)</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">cb</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">onRequest</span> <span class="o">?</span> <span class="nx">command</span><span class="p">.</span><span class="nx">onRequest</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onRequest</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">command</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>register the REST endpoint</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">[</span><span class="nx">command</span><span class="p">.</span><span class="nx">method</span><span class="p">](</span><span class="nx">command</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">command</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Loads the webdriver commands (aka. REST endpoints) from the commands library</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method _loadCommands</span>
+<span class="cm"> * @chainable</span>
+<span class="cm"> * @private</span>
+<span class="cm"> */</span>
+
+<span class="nx">WebDriverServer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_loadCommands</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">dir</span> <span class="o">=</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/commands/webdriver/&#39;</span><span class="p">;</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readdirSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">require</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="nx">file</span><span class="p">)(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Default webdriver request handler,</span>
+<span class="cm"> * will be used if no `onRequest` method is given in the</span>
+<span class="cm"> * webdriver command</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method _onRequest</span>
+<span class="cm"> * @param {object} command</span>
+<span class="cm"> * @param {object} req</span>
+<span class="cm"> * @param {object} res</span>
+<span class="cm"> * @chainable</span>
+<span class="cm"> * @private</span>
+<span class="cm"> */</span>
+
+<span class="nx">WebDriverServer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_onRequest</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">command</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>extract the request paramters</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">parameters</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parameters</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+  <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>add paramters extracted from the post body if necessary</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nx">command</span><span class="p">.</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">command</span><span class="p">.</span><span class="nx">params</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">parameters</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">[</span><span class="nx">command</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]];</span>
+    <span class="p">});</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>trigger the marionette command</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;marionette:cmd:&#39;</span> <span class="o">+</span> <span class="nx">command</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>generate &amp; send the webdriver response when the command has been executed by marionette</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;marionette:cmd:&#39;</span> <span class="o">+</span> <span class="nx">command</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;:response&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">answer</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">sessionId</span><span class="o">:</span> <span class="nx">parameters</span><span class="p">.</span><span class="nx">sessionId</span><span class="p">,</span> <span class="nx">status</span><span class="o">:</span> <span class="mi">0</span><span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>check if we need to send a value with the response</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">answer</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>check if we need to add an timeout to the action
+TODO: we need to find a better way than using a timeout
+Problem: It seems that there is no function in marionette
+that indicates if we actually changed the url based on a previous action</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">?</span> <span class="nx">command</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">answer</span><span class="p">));</span>
+    <span class="p">},</span> <span class="nx">timeout</span><span class="p">);</span>
+
+  <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+  <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">WebDriverServer</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

@@ -1,0 +1,119 @@
+<!DOCTYPE html>  <html> <head>   <title>session.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="index.html">                 index.js               </a>                                           <a class="source" href="cookie.html">                 cookie.js               </a>                                           <a class="source" href="element.html">                 element.js               </a>                                           <a class="source" href="execute.html">                 execute.js               </a>                                           <a class="source" href="frame.html">                 frame.js               </a>                                           <a class="source" href="ime.html">                 ime.js               </a>                                           <a class="source" href="interaction.html">                 interaction.js               </a>                                           <a class="source" href="page.html">                 page.js               </a>                                           <a class="source" href="screenshot.html">                 screenshot.js               </a>                                           <a class="source" href="session.html">                 session.js               </a>                                           <a class="source" href="storage.html">                 storage.js               </a>                                           <a class="source" href="timeout.html">                 timeout.js               </a>                                           <a class="source" href="url.html">                 url.js               </a>                                           <a class="source" href="window.html">                 window.js               </a>                                           <a class="source" href="cookie.html">                 cookie.js               </a>                                           <a class="source" href="element.html">                 element.js               </a>                                           <a class="source" href="execute.html">                 execute.js               </a>                                           <a class="source" href="frame.html">                 frame.js               </a>                                           <a class="source" href="ime.html">                 ime.js               </a>                                           <a class="source" href="interaction.html">                 interaction.js               </a>                                           <a class="source" href="log.html">                 log.js               </a>                                           <a class="source" href="page.html">                 page.js               </a>                                           <a class="source" href="screenshot.html">                 screenshot.js               </a>                                           <a class="source" href="session.html">                 session.js               </a>                                           <a class="source" href="storage.html">                 storage.js               </a>                                           <a class="source" href="timeout.html">                 timeout.js               </a>                                           <a class="source" href="url.html">                 url.js               </a>                                           <a class="source" href="window.html">                 window.js               </a>                                           <a class="source" href="marionette.html">                 marionette.js               </a>                                           <a class="source" href="webdriver.html">                 webdriver.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               session.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*!</span>
+<span class="cm"> *</span>
+<span class="cm"> * Copyright (c) 2013 Sebastian Golasch</span>
+<span class="cm"> *</span>
+<span class="cm"> * Permission is hereby granted, free of charge, to any person obtaining a</span>
+<span class="cm"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span>
+<span class="cm"> * to deal in the Software without restriction, including without limitation</span>
+<span class="cm"> * the rights to use, copy, modify, merge, publish, distribute, sublicense,</span>
+<span class="cm"> * and/or sell copies of the Software, and to permit persons to whom the</span>
+<span class="cm"> * Software is furnished to do so, subject to the following conditions:</span>
+<span class="cm"> *</span>
+<span class="cm"> * The above copyright notice and this permission notice shall be included</span>
+<span class="cm"> * in all copies or substantial portions of the Software.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS</span>
+<span class="cm"> * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="cm"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="cm"> * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="cm"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING</span>
+<span class="cm"> * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER</span>
+<span class="cm"> * DEALINGS IN THE SOFTWARE.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Session related WebDriver endpoints</span>
+<span class="cm"> * see [JsonWireProtocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol)</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module FirefoxDriver</span>
+<span class="cm"> * @class Session</span>
+<span class="cm"> * @namespace FirefoxDriver.Commands.WebDriver</span>
+<span class="cm"> */</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">Driver</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Create a new session. The server should attempt to create a session that most closely matches</span>
+<span class="cm">   * the desired and required capabilities. Required capabilities have higher priority than</span>
+<span class="cm">   * desired capabilities and must be set for the session to be created.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method createSession</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#POST_/session</span>
+<span class="cm">   * @param {POST} desiredCapabilities An object describing the session&#39;s desired capabilities.</span>
+<span class="cm">   * @param {POST} requiredCapabilities An object describing the session&#39;s required capabilities</span>
+<span class="cm">   * @return {303} See Other redirect to /session/:sessionId, where :sessionId is the ID of the newly created session.</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;createSession&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+    <span class="nx">onRequest</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>load the marionette connection id &amp; then request the session id</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;marionette:cmd:getMarionetteID&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;marionette:cmd:getMarionetteID:response&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">connection</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;marionette:setMarionetteID&#39;</span><span class="p">,</span> <span class="nx">connection</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;marionette:cmd:getSession&#39;</span><span class="p">);</span>
+        <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>send out the webdriver session response</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;marionette:cmd:getSession:response&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">session</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">location</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">port</span> <span class="o">+</span> <span class="s1">&#39;/session/&#39;</span> <span class="o">+</span> <span class="nx">session</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+        <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Returns a list of the currently active sessions</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method sessions</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/sessions</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;sessions&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/sessions&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Returns a list of the currently active sessions</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method sessions</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/sessions</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;sessions&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/sessions&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Retrieve the capabilities of the specified session.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method session</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;session&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span>
+  <span class="p">});</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Delete the session.</span>
+<span class="cm">   *</span>
+<span class="cm">   * @method session</span>
+<span class="cm">   * @see https://code.google.com/p/selenium/wiki/JsonWireProtocol#GET_/session/:sessionId</span>
+<span class="cm">   * @param {GET} sessionId ID of the session to route the command to</span>
+<span class="cm">   */</span>
+
+  <span class="nx">Driver</span><span class="p">.</span><span class="nx">addCommand</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;deleteSession&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/session/:sessionId&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;del&#39;</span>
+  <span class="p">});</span>
+
+<span class="p">};</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
