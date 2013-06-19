@@ -22,6 +22,8 @@
  *
  */
 
+'use strict';
+
 // ext. libs
 var spawn = require('child_process').spawn;
 var Events = require('events').EventEmitter;
@@ -189,7 +191,7 @@ var FirefoxDriver = {
       .then(function (profile) {
         this.profile = profile;
         this._startBrowser(profile.path, profile.name, deferred);
-      }.bind(this))
+      }.bind(this));
     }.bind(this));
 
     return deferred.promise;
@@ -277,7 +279,7 @@ var FirefoxDriver = {
    */
 
   _browserIsReady: function (data) {
-    return !!(String(data).search('== 12') !== -1)
+    return (String(data).search('== 12') !== -1);
   },
 
   /**
@@ -295,8 +297,8 @@ var FirefoxDriver = {
     var data = '';
 
     // collect data from stdout/stderr
-    ps.stdout.on('data', function (buf) { data += buf });
-    ps.stderr.on('data', function (buf) { data += buf });
+    ps.stdout.on('data', function (buf) { data += buf; });
+    ps.stderr.on('data', function (buf) { data += buf; });
 
     ps.on('exit', function (code) {
       // reject the deferred when an error occured
@@ -317,7 +319,7 @@ var FirefoxDriver = {
     }.bind(this));
 
     return deferred.promise;
-},
+  },
 
   /**
    * Creates user preferences for the profile
@@ -328,7 +330,7 @@ var FirefoxDriver = {
    * @private
    */
 
-  _createUserPreferences: function (profilePath, profileName) {
+  _createUserPreferences: function (profilePath) {
     var deferred = Q.defer();
     var prefs = '';
 
@@ -372,34 +374,34 @@ var FirefoxDriver = {
   _checkUserSetBinary: function (userPath, deferred) {
     // check the binary location on a per OS basis
     switch (process.platform) {
-      case 'win32':
+    case 'win32':
       break;
-      case 'darwin':
-        // check if we need to replace the users home directory
-        if (userPath.trim()[0] === '~') {
-          userPath = userPath.replace('~', process.env.HOME);
-        }
+    case 'darwin':
+      // check if we need to replace the users home directory
+      if (userPath.trim()[0] === '~') {
+        userPath = userPath.replace('~', process.env.HOME);
+      }
 
-        // check if we need to add a trailing slash
-        if (userPath[userPath.length - 1] !== '/') {
-          userPath += '/';
-        }
+      // check if we need to add a trailing slash
+      if (userPath[userPath.length - 1] !== '/') {
+        userPath += '/';
+      }
 
-        // add the default binary location
-        userPath += this.defaultBinaries.mac.bin;
+      // add the default binary location
+      userPath += this.defaultBinaries.mac.bin;
 
-        // check if the binary exists
-        if (fs.existsSync(userPath)) {
-          this.binary = userPath;
-          deferred.resolve(userPath);
-        } else {
-          // TODO: Use daleks super awesome not yet implemented error handler...
-          console.log('BINARY NOT FOUND:', userPath);
-          process.exit();
-          deferred.reject();
-        }
+      // check if the binary exists
+      if (fs.existsSync(userPath)) {
+        this.binary = userPath;
+        deferred.resolve(userPath);
+      } else {
+        // TODO: Use daleks super awesome not yet implemented error handler...
+        console.log('BINARY NOT FOUND:', userPath);
+        process.exit();
+        deferred.reject();
+      }
       break;
-      default:
+    default:
       break;
     }
 
@@ -410,7 +412,7 @@ var FirefoxDriver = {
    *
    */
 
-  _checkBinarywin32: function (deferred) {
+  _checkBinarywin32: function () {
     // body...
   },
 
@@ -418,7 +420,7 @@ var FirefoxDriver = {
    *
    */
 
-  _checkBinarydarwin: function (deferred) {
+  _checkBinarydarwin: function () {
     // body...
   },
 
@@ -426,7 +428,7 @@ var FirefoxDriver = {
    *
    */
 
-  _checkLinuxBinary: function (deferred) {
+  _checkLinuxBinary: function () {
     // body...
   }
 };
