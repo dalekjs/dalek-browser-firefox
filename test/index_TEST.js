@@ -1,19 +1,20 @@
+'use strict';
+
+var expect = require('chai').expect;
 var FirefoxDriver = require('../index');
 
-exports.canGetWebdriverPort = function(test){
-    test.expect(1);
-    test.equal(FirefoxDriver.getPort(), 9006, "can get webdriver port");
-    test.done();
-};
+describe('dalek-browser-firefox', function() {
 
-exports.canGetMarionettePort = function(test){
-    test.expect(1);
-    test.equal(FirefoxDriver.getMarionettePort(), 2828, "can get static marionette port");
-    test.done();
-};
+  it('should get default webdriver port', function(){
+    expect(FirefoxDriver.getPort()).to.equal(9006);
+  });
 
-exports.canGetHost = function(test){
-    test.expect(1);
-    test.equal(FirefoxDriver.getHost(), 'localhost', "can get static host");
-    test.done();
-};
+  it('should get default marionette port', function(){
+    expect(FirefoxDriver.getMarionettePort()).to.equal(2828);
+  });
+
+  it('should get default host', function(){
+    expect(FirefoxDriver.getHost()).to.equal('localhost');
+  });
+
+});
