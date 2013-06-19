@@ -1,21 +1,29 @@
 {
   "name": "dalek-browser-firefox",
   "version": "0.0.1",
-  "description": "Firefox binding for DalekJS",
+  "description": "Firefox browser binding for DalekJS",
+  "homepage": "http://dalekjs.com",
   "main": "./index.js",
   "dependencies": {
     "express": "~3.2.6",
     "rimraf": "~2.1.4",
-    "q": "~0.9.5"
+    "q": "~0.9.6"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-yuidoc": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-yuidoc": "~0.4.0",
+    "grunt-contrib-compress": "~0.5.2",
+    "grunt-mocha-test": "~0.4.0",
     "grunt-complexity": "~0.1.3",
-    "grunt-docco": "~0.2.0",
-    "grunt-plato": "~0.2.0"
+    "grunt-plato": "~0.2.0",
+    "grunt-documantix": "~0.0.1",
+    "blanket": "~1.1.5",
+    "chai": "~1.7.0"
+  },
+  "peerDependencies": {
+    "dalekjs": "~0.0.1"
   },
   "repository": {
     "type": "git",
@@ -26,6 +34,7 @@
   },
   "keywords": [
     "dalekjs",
+    "dalek-browser-plugin",
     "firefox"
   ],
   "author": {
