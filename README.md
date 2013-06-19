@@ -4,7 +4,7 @@ dalek-browser-firefox
 > DalekJS browser plugin for Mozilla Firefox
 
 [![Build Status](https://travis-ci.org/dalekjs/dalek-browser-firefox.png)](https://travis-ci.org/dalekjs/dalek-browser-firefox)
-[![Build Status](https://drone.io/github.com/dalekjs/dalek-internal-assertions/status.png)](https://drone.io/github.com/dalekjs/dalek-browser-firefox/latest)
+[![Build Status](https://drone.io/github.com/dalekjs/dalek-browser-firefox/status.png)](https://drone.io/github.com/dalekjs/dalek-browser-firefox/latest)
 [![Dependency Status](https://david-dm.org/dalekjs/dalek-browser-firefox.png)](https://david-dm.org/dalekjs/dalek-browser-firefox)
 [![devDependency Status](https://david-dm.org/dalekjs/dalek-browser-firefox/dev-status.png)](https://david-dm.org/dalekjs/dalek-browser-firefox#info=devDependencies)
 [![NPM version](https://badge.fury.io/js/dalek-browser-firefox.png)](http://badge.fury.io/js/dalek-browser-firefox)

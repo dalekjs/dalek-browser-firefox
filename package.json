@@ -25,6 +25,9 @@
   "peerDependencies": {
     "dalekjs": "~0.0.1"
   },
+  "scripts": {
+    "test": "grunt test"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/dalekjs/dalek-browser-firefox.git"
