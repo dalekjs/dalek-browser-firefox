@@ -12,8 +12,9 @@ logs
 results
 
 npm-debug.log
+report.zip
 
+/coverage/
 /node_modules/
-/reports/
-/docs/
+/report/
 .DS_STORE
