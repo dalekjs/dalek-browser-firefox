@@ -212,7 +212,7 @@ var FirefoxDriver = {
       this.webDriverServer.kill()
     ]).then(function () {
       this.spawned.kill('SIGKILL');
-      this._deleteProfile();
+      //this._deleteProfile();
     }.bind(this));
   },
 
