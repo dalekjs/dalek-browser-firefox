@@ -9,13 +9,17 @@ module.exports = function (grunt) {
     // define a src set of files for other tasks
     src: {
       lint: ['Gruntfile.js', 'index.js', 'lib/**/*.js', 'test/*.js'],
-      complexity: ['index.js', 'lib/**/*.js', 'test/*.js'],
+      complexity: ['index.js', 'lib/**/*.js'],
       test: ['test/*.js'],
       src: ['index.js', 'lib/**/*.js']
     },
 
-    // clean coverage helper file
-    clean: ['coverage', 'report', 'report.zip'],
+    // clean automatically generated helper files & docs
+    clean: {
+      coverage: ['coverage', 'report/coverage'],
+      report: ['report/complexity', 'report/api', 'report/docs'],
+      reportZip: ['report.zip']
+    },
 
     // linting
     jshint: {
@@ -105,14 +109,14 @@ module.exports = function (grunt) {
   });
 
   // prepare files & folders for grunt:plato & coverage
-  grunt.registerTask('prepare', function () {
+  grunt.registerTask('preparePlato', function () {
     var fs = require('fs');
 
-    var platoDummyFolders = ['coverage', 'report', 'report/coverage', 'report/complexity', 'report/complexity/files', 'report/complexity/files/test', 'report/complexity/files/index_js', 'report/complexity/files/lib', 'report/complexity/files/lib/commands', 'report/complexity/files/lib_commands_marionette', 'report/complexity/files/lib_commands_webdriver', 'report/complexity/files/lib_webdriver_js', 'report/complexity/files/lib_marionette_js'];
+    var platoDummyFolders = ['report', 'report/complexity', 'report/complexity/files', 'report/complexity/files/index_js', 'report/complexity/files/lib', 'report/complexity/files/lib/commands', 'report/complexity/files/lib_commands_marionette', 'report/complexity/files/lib_commands_webdriver', 'report/complexity/files/lib_webdriver_js', 'report/complexity/files/lib_marionette_js'];
     var platoDummyFiles = ['/report/complexity/report.history.json', '/report/complexity/files/report.history.json', '/report/complexity/files/index_js/report.history.json', '/report/complexity/files/lib_webdriver_js/report.history.json', '/report/complexity/files/lib_marionette_js/report.history.json'];
 
     // loopy loop
-    ['/lib/commands/marionette/', '/lib/commands/webdriver/', '/test/'].forEach(function (folder) {
+    ['/lib/commands/marionette/', '/lib/commands/webdriver/'].forEach(function (folder) {
       fs.readdirSync(__dirname + folder).forEach(function (file) {
         var platoFolder = '/report/complexity/files/' + folder.substring(1).replace(/\//g, '_') + file.replace('.js', '_js');
         platoDummyFolders.push(platoFolder);
@@ -122,17 +126,35 @@ module.exports = function (grunt) {
 
     // generate dirs for docs & reports
     platoDummyFolders.forEach(function (path) {
-      fs.mkdirSync(__dirname + '/' + path);
+      if (!fs.existsSync(__dirname + '/' + path)) {
+        fs.mkdirSync(__dirname + '/' + path);
+      }
     });
 
     // store some dummy reports, so that grunt plato doesnt complain
     platoDummyFiles.forEach(function (file) {
-      fs.writeFileSync(__dirname + file, '{}');
+      if (!fs.existsSync(__dirname + file)) {
+        fs.writeFileSync(__dirname + file, '{}');
+      }
+    });
+  });
+
+  // prepare files & folders for coverage
+  grunt.registerTask('prepareCoverage', function () {
+    var fs = require('fs');
+
+    // generate folders
+    ['coverage', 'report', 'report/coverage'].forEach(function (folder) {
+      if (!fs.existsSync(__dirname + '/' + folder)) {
+        fs.mkdirSync(__dirname + '/' + folder);
+      }
     });
 
     // generate code coverage helper file
-    var coverageHelper = 'require("blanket")({pattern: require("fs").realpathSync(__dirname + "/../index.js")});';
-    fs.writeFileSync(__dirname + '/coverage/blanket.js', coverageHelper);
+    var coverageHelper = 'require("blanket")({pattern: [require("fs").realpathSync(__dirname + "/../index.js"), require("fs").realpathSync(__dirname + "/../lib/")]});';
+    if (!fs.existsSync(__dirname + '/coverage/blanket.js')) {
+      fs.writeFileSync(__dirname + '/coverage/blanket.js', coverageHelper);
+    }
   });
 
   // load 3rd party tasks
@@ -147,6 +169,7 @@ module.exports = function (grunt) {
 
   // define runner tasks
   grunt.registerTask('lint', 'jshint');
-  grunt.registerTask('test', ['clean', 'prepare', 'lint', 'mochaTest', 'complexity']);
-  grunt.registerTask('docs', ['clean', 'prepare', 'plato', 'mochaTest', 'documantix', 'yuidoc', 'compress']);
+  grunt.registerTask('test', ['clean:coverage', 'prepareCoverage', 'lint', 'mochaTest', 'complexity']);
+  grunt.registerTask('docs', ['clean:reportZip', 'clean:report', 'preparePlato', 'plato', 'documantix', 'yuidoc', 'compress']);
+  grunt.registerTask('all', ['clean', 'test', 'docs']);
 };
