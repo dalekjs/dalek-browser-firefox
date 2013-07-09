@@ -37,8 +37,11 @@ var Marionette = require('./lib/marionette');
 var WebDriverServer = require('./lib/webdriver');
 
 /**
- * @module FirefoxDriver
+ * FirefoxDriver base class
+ *
+ * @module DalekJS
  * @class FirefoxDriver
+ * @namespace Browser
  */
 
 var FirefoxDriver = {
@@ -46,7 +49,7 @@ var FirefoxDriver = {
   /**
    * Verbose version of the browser name
    *
-   * @property
+   * @property longName
    * @type string
    * @default Mozilla Firefox
    */
@@ -58,7 +61,7 @@ var FirefoxDriver = {
    * The port may change, cause the port conflict resultion
    * tool might pick another one, if the default one is blocked
    *
-   * @property
+   * @property port
    * @type integer
    * @default 9006
    */
@@ -70,7 +73,7 @@ var FirefoxDriver = {
    * The port may change, cause the port conflict resultion
    * tool might pick another one, if the default one is blocked
    *
-   * @property
+   * @property marionettePort
    * @type integer
    * @default 2828
    */
@@ -82,7 +85,7 @@ var FirefoxDriver = {
    * The host may be overriden with
    * a user configured value
    *
-   * @property
+   * @property host
    * @type string
    * @default localhost
    */
@@ -92,7 +95,7 @@ var FirefoxDriver = {
   /**
    * Root path of the FirefoxWebDriverServer
    *
-   * @property
+   * @property path
    * @type string
    * @default ''
    */
@@ -102,15 +105,18 @@ var FirefoxDriver = {
   /**
    * Path to the Firefox binary file
    *
-   * @property
+   * @property binary
    * @type string
-   * @default /
+   * @default null
    */
 
   binary: null,
 
   /**
+   * Paths to the default Firefox binary files
    *
+   * @property defaultBinaries
+   * @type object
    */
 
   defaultBinaries: {
@@ -122,8 +128,9 @@ var FirefoxDriver = {
   /**
    * Child process instance of the Firefox browser
    *
-   * @property
+   * @property spawned
    * @type null|Object
+   * @default null
    */
 
   spawned: null,
@@ -131,6 +138,10 @@ var FirefoxDriver = {
   /**
    * Collected data about the created profile,
    * path, name, etc.
+   *
+   * @property profile
+   * @type null
+   * @default null
    */
 
   profile: null,
@@ -139,7 +150,7 @@ var FirefoxDriver = {
    * Resolves the driver port
    *
    * @method getPort
-   * @return integer
+   * @return {integer} port WebDriver server port
    */
 
   getPort: function () {
@@ -149,8 +160,8 @@ var FirefoxDriver = {
   /**
    * Resolves the marionette port
    *
-   * @method getPort
-   * @return integer
+   * @method getMarionettePort
+   * @return {integer} port Marionette server port
    */
 
   getMarionettePort: function () {
@@ -161,7 +172,7 @@ var FirefoxDriver = {
    * Returns the driver host
    *
    * @method getHost
-   * @type string
+   * @return {string} host WebDriver server hostname
    */
 
   getHost: function () {
@@ -172,7 +183,7 @@ var FirefoxDriver = {
    * Launches the FirefoxWebDriverServer & the browser
    *
    * @method launch
-   * @return Q.promise
+   * @return {object} promise Browser promise
    */
 
   launch: function (options) {
@@ -214,10 +225,12 @@ var FirefoxDriver = {
       this.spawned.kill('SIGKILL');
       //this._deleteProfile();
     }.bind(this));
+    return this;
   },
 
   /**
    *
+   * @method getBrowserBinary
    */
 
   getBrowserBinary: function (options) {
@@ -244,6 +257,8 @@ var FirefoxDriver = {
 
   /**
    *
+   * @method _startBrowser
+   * @private
    */
 
   _startBrowser: function (profilePath, profileName, deferred) {
@@ -266,6 +281,9 @@ var FirefoxDriver = {
 
   /**
    * Consumes the console output when the browser is started
+   *
+   * @method _onBrowserStartup
+   * @private
    */
 
   _onBrowserStartup: function (deferred, data) {
@@ -276,6 +294,9 @@ var FirefoxDriver = {
 
   /**
    * Checks if the browser is ready for communication
+   *
+   * @method _browserIsReady
+   * @private
    */
 
   _browserIsReady: function (data) {
@@ -369,6 +390,9 @@ var FirefoxDriver = {
 
   /**
    *
+   *
+   * @method _checkUserSetBinary
+   * @private
    */
 
   _checkUserSetBinary: function (userPath, deferred) {
@@ -410,6 +434,9 @@ var FirefoxDriver = {
 
   /**
    *
+   *
+   * @method _checkBinarywin32
+   * @private
    */
 
   _checkBinarywin32: function () {
@@ -418,6 +445,9 @@ var FirefoxDriver = {
 
   /**
    *
+   *
+   * @method _checkBinarydarwin
+   * @private
    */
 
   _checkBinarydarwin: function () {
@@ -426,6 +456,9 @@ var FirefoxDriver = {
 
   /**
    *
+   *
+   * @method _checkLinuxBinary
+   * @private
    */
 
   _checkLinuxBinary: function () {
