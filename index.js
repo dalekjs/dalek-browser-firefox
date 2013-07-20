@@ -42,6 +42,8 @@ var WebDriverServer = require('./lib/webdriver');
  * @module DalekJS
  * @class FirefoxDriver
  * @namespace Browser
+ * @part Firefox
+ * @api
  */
 
 var FirefoxDriver = {

@@ -8,11 +8,15 @@ dalek-browser-firefox
 [![Dependency Status](https://david-dm.org/dalekjs/dalek-browser-firefox.png)](https://david-dm.org/dalekjs/dalek-browser-firefox)
 [![devDependency Status](https://david-dm.org/dalekjs/dalek-browser-firefox/dev-status.png)](https://david-dm.org/dalekjs/dalek-browser-firefox#info=devDependencies)
 [![NPM version](https://badge.fury.io/js/dalek-browser-firefox.png)](http://badge.fury.io/js/dalek-browser-firefox)
+[![Coverage](http://dalekjs.github.io/dalekjs.com/package/dalek-browser-firefox/master/coverage/coverage.png)](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/index.html)
+[![unstable](https://rawgithub.com/hughsk/stability-badges/master/dist/unstable.svg)](http://github.com/hughsk/stability-badges)
+
+[![NPM](https://nodei.co/npm/dalek-browser-firefox.png)](https://nodei.co/npm/dalek-browser-firefox/)
 
 ## Warning
 
 This module is a browser plugin for [DalekJS](//github.com/dalekjs/dalek).
-It provides all a WebDriverServer & browser launcher for firefox, used by DalekJS.
+It provides all a WebDriverServer & browser launcher for Firefox, used by DalekJS.
 
 ## Ressources
 
@@ -20,7 +24,7 @@ It provides all a WebDriverServer & browser launcher for firefox, used by DalekJ
 [Code coverage](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/index.html) -
 [Code complexity](http://dalekjs.com/package/dalek-browser-firefox/master/complexity/index.html) -
 [Contributing](https://github.com/dalekjs/dalek-browser-firefox/blob/master/CONTRIBUTING.md) -
-[User Docs](http://dalekjs.com/docs/master/browser/firefox.html) -
+[User Docs](http://dalekjs.com/docs/firefox.html) -
 [Homepage](http://dalekjs.com) -
 [Twitter](http://twitter.com/dalekjs)
 
@@ -47,7 +51,7 @@ how to override that feature, browser specific problems and so on.
 
 Questions on StackOverflow often turn in to blog posts or issues.
 
-### [Github Issues](//github.com/dalekjs/dalek-internal-assertions/issues)
+### [Github Issues](//github.com/dalekjs/dalek-browser-firefox/issues)
 
 Report issues with DalekJS, submit pull requests to fix problems, or to
 create summarized and documented feature requests (preferably with pull
