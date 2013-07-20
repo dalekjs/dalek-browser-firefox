@@ -8,7 +8,7 @@ dalek-browser-firefox
 [![Dependency Status](https://david-dm.org/dalekjs/dalek-browser-firefox.png)](https://david-dm.org/dalekjs/dalek-browser-firefox)
 [![devDependency Status](https://david-dm.org/dalekjs/dalek-browser-firefox/dev-status.png)](https://david-dm.org/dalekjs/dalek-browser-firefox#info=devDependencies)
 [![NPM version](https://badge.fury.io/js/dalek-browser-firefox.png)](http://badge.fury.io/js/dalek-browser-firefox)
-[![Coverage](http://dalekjs.github.io/dalekjs.com/package/dalek-browser-firefox/master/coverage/coverage.png)](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/index.html)
+[![Coverage](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/coverage.png)](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/index.html)
 [![unstable](https://rawgithub.com/hughsk/stability-badges/master/dist/unstable.svg)](http://github.com/hughsk/stability-badges)
 
 [![NPM](https://nodei.co/npm/dalek-browser-firefox.png)](https://nodei.co/npm/dalek-browser-firefox/)
