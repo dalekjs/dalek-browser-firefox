@@ -246,6 +246,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-complexity');
   grunt.loadNpmTasks('grunt-documantix');
   grunt.loadNpmTasks('grunt-plato');
+  grunt.loadNpmTasks('grunt-include-replace');
 
   // define runner tasks
   grunt.registerTask('lint', 'jshint');
