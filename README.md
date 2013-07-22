@@ -20,7 +20,8 @@ It provides all a WebDriverServer & browser launcher for Firefox, used by DalekJ
 
 ## Ressources
 
-[API Documentation](http://dalekjs.com/package/dalek-browser-firefox/master/api/index.html) -
+[API Docs](http://dalekjs.com/package/dalek-browser-firefox/master/api/index.html) -
+[Trello](https://trello.com/b/DAdivSdx/dalek-browser-firefox) -
 [Code coverage](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/index.html) -
 [Code complexity](http://dalekjs.com/package/dalek-browser-firefox/master/complexity/index.html) -
 [Contributing](https://github.com/dalekjs/dalek-browser-firefox/blob/master/CONTRIBUTING.md) -
