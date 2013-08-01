@@ -12,11 +12,7 @@ dalek-browser-firefox
 [![unstable](https://rawgithub.com/hughsk/stability-badges/master/dist/unstable.svg)](http://github.com/hughsk/stability-badges)
 
 [![NPM](https://nodei.co/npm/dalek-browser-firefox.png)](https://nodei.co/npm/dalek-browser-firefox/)
-
-## Warning
-
-This module is a browser plugin for [DalekJS](//github.com/dalekjs/dalek).
-It provides all a WebDriverServer & browser launcher for Firefox, used by DalekJS.
+[![NPM](https://nodei.co/npm-dl/dalek-browser-firefox.png)](https://nodei.co/npm/dalek-browser-firefox/)
 
 ## Ressources
 
@@ -28,6 +24,45 @@ It provides all a WebDriverServer & browser launcher for Firefox, used by DalekJ
 [User Docs](http://dalekjs.com/docs/firefox.html) -
 [Homepage](http://dalekjs.com) -
 [Twitter](http://twitter.com/dalekjs)
+
+## Docs
+
+This module is a browser plugin for [DalekJS](//github.com/dalekjs/dalek).
+It provides all a WebDriverServer & browser launcher for Mozilla Firefox.
+
+The browser plugin can be installed with the following command:
+
+```
+$ npm install dalek-browser-firefox --save-dev
+```
+
+You can use the browser plugin by adding a config option to the your Dalekfile
+
+```js
+"browsers": ["firefox"]
+```
+
+Or you can tell Dalek that it should test in this browser via the command line:
+
+```
+$ dalek mytest.js -b firefox
+```
+
+Because of the availability of the Firefox Marionette testing framework,
+Dalek atm. can only drive the Firefox Aurora Debug builds.
+
+You also have to add the location of the browser executable to you Dalekfile,
+because Dalek isn't capable of finding the executable yet on its own.
+
+```js
+  "browsers": [{
+    "firefox": {
+      "path": "~/Apps/FirefoxAuroraDebug.app/"
+    }
+  }]
+```
+
+The Firefox plugin only implements a subset of Daleks Assertions & Actions, so if you run into any bugs, the issue is most probably related to missing commands.
 
 ## Help Is Just A Click Away
 
@@ -62,7 +97,7 @@ requests that implement the feature).
 other, better channels for seeking assistance, like StackOverflow and the
 Google Groups mailing list.
 
-![DalekJS](https://raw.github.com/dalekjs/dalekjs.com/master/img/logo.jpg)
+![DalekJS](https://raw.github.com/dalekjs/dalekjs.com/master/img/logo.png)
 
 ## Legal FooBar (MIT License)
 

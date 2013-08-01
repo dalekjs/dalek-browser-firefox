@@ -37,7 +37,43 @@ var Marionette = require('./lib/marionette');
 var WebDriverServer = require('./lib/webdriver');
 
 /**
- * FirefoxDriver base class
+ * This module is a browser plugin for [DalekJS](//github.com/dalekjs/dalek).
+ * It provides all a WebDriverServer & browser launcher for Mozilla Firefox.
+ *
+ * The browser plugin can be installed with the following command:
+ *
+ * ```bash
+ * $ npm install dalek-browser-firefox --save-dev
+ * ```
+ *
+ * You can use the browser plugin by adding a config option to the your Dalekfile
+ *
+ * ```javascript
+ * "browsers": ["firefox"]
+ * ```
+ *
+ * Or you can tell Dalek that it should test in this browser via the command line:
+ *
+ * ```bash
+ * $ dalek mytest.js -b firefox
+ * ```
+ *
+ * Because of the availability of the Firefox Marionette testing framework,
+ * Dalek atm. can only drive the Firefox Aurora Debug builds.
+ *
+ * You also have to add the location of the browser executable to you Dalekfile,
+ * because Dalek isn't capable of finding the executable yet on its own.
+ *
+ * ```javascript
+ * "browsers": [{
+ *   "firefox": {
+ *     "path": "~/Apps/FirefoxAuroraDebug.app/"
+ *   }
+ * }]
+ * ```
+ *
+ * The Firefox plugin only implements a subset of Daleks Assertions & Actions, so if you run into any bugs,
+ * the issue is most probably related to missing commands.
  *
  * @module DalekJS
  * @class FirefoxDriver
