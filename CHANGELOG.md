@@ -1,3 +1,9 @@
+## v0.0.3 (2013-08-16)
+
+### Bug Fixes
+
+* **index:** Hotfix release - Added `-marionette` cmd switch that enables latest firefox to run
+
 ## v0.0.2 (2013-08-16)
 
 ### Features

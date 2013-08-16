@@ -60,11 +60,8 @@ var WebDriverServer = require('./lib/webdriver');
  *
  * Because of the availability of the Firefox Marionette testing framework,
  * Dalek atm. can only drive the Firefox Nightly Debug builds.
- * Also, some weird change that the Mozillians have done to the testing framework,
- * the latest browser version dalek supports atm. is version 24, and to be exactly,
- * the version from the 18th of June.
  *
- * You can get the browser here [http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/06/2013-06-18-mozilla-central-debug/](http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/06/2013-06-18-mozilla-central-debug/)
+ * You can get them from Mozillas FTP server, for example the one from the 16th August [http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/08/2013-08-16-mozilla-central-debug/](http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/06/2013-06-18-mozilla-central-debug/)
  *
  * Dalek looks for the browser in the std. installation directory, if you installed the
  * browser in a different place, you can add the location of the browser executable to you Dalekfile,
@@ -324,7 +321,7 @@ var FirefoxDriver = {
     var df = Q.defer();
 
     // start the browser, grep its output
-    this.spawned = spawn(this.binary, ['-P', profileName]);
+    this.spawned = spawn(this.binary, ['-marionette', '-P', profileName]);
     this.spawned.stdout.on('data', this._onBrowserStartup.bind(this, df));
 
     // connect to the marionette socket server
