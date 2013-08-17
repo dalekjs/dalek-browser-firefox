@@ -385,7 +385,7 @@ var FirefoxDriver = {
       }
 
       // grep the profile data
-      var m = data.match(/^Success: created profile '[^']+' at '([^']+)/);
+      var m = data.match(/Success: created profile '[^']+' at '([^']+)/);
       var profilePath = path.join(path.dirname(m[1]));
 
       // create the user preferences
