@@ -68,7 +68,7 @@ The Firefox plugin only implements a subset of Daleks Assertions & Actions, so i
 
 ### #dalekjs on FreeNode.net IRC
 
-Join the `#daleksjs` channel on [FreeNode.net](http://freenode.net) to ask questions and get help.
+Join the `#dalekjs` channel on [FreeNode.net](http://freenode.net) to ask questions and get help.
 
 ### [Google Group Mailing List](https://groups.google.com/forum/#!forum/dalekjs)
 
