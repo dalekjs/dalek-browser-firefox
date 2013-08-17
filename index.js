@@ -232,7 +232,7 @@ var FirefoxDriver = {
     var deferred = Q.defer();
     // init the webdriver server, marionette bindings & the event glue
     this.events = new Events();
-    this.events.setMaxListeners(-1);
+    this.events.setMaxListeners(Infinity);
     this.marionette = new Marionette(this.events);
     this.webDriverServer = new WebDriverServer(this.events);
 
