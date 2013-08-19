@@ -281,18 +281,19 @@ module.exports = function (grunt) {
     console.log(process.env);
 
     var npm = require('npm');
-    npm.load({}, function(err) {
+    npm.load({}, function() {
       npm.registry.adduser(process.env.npmuser, process.env.npmpass, process.env.npmmail, function(err) {
         if (err) {
           grunt.log.error(err);
-          grunt.file.write('package.json', JSON.stringify(canaryPkg, true, 2));
+          grunt.file.write('package.json', JSON.stringify(pkg, true, 2));
           done(false);
         } else {
-          npm.config.set("email", process.env.npmmail, "user");
+          npm.config.set('email', process.env.npmmail, 'user');
           npm.commands.publish([], function(err) {
-          grunt.log.ok("Published canary build to registry");
-          done(!err);
-        });
+            grunt.file.write('package.json', JSON.stringify(pkg, true, 2));
+            grunt.log.ok('Published canary build to registry');
+            done(!err);
+          });
         }
       });
     });
