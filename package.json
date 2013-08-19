@@ -8,8 +8,7 @@
     "express": "~3.3.4",
     "rimraf": "~2.2.0",
     "q": "~0.9.6",
-    "which": "~1.0.1",
-    "dalek-browser-plugin": "1.0.0"
+    "which": "~1.0.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
