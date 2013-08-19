@@ -245,7 +245,7 @@ module.exports = function (grunt) {
   // archives the docs if a new version appears
   grunt.registerTask('archive', function () {
     var done = this.async();
-    grunt.util.spawn({cmd: 'git', args: ['describe', '--abbrev=0', '--tags']}, function (error, result, code) {
+    grunt.util.spawn({cmd: 'git', args: ['describe', '--abbrev=0', '--tags']}, function (error, result) {
       var lastTag = result.toString();
       if (grunt.file.isDir('report/docs/' + lastTag)) {
         grunt.log.ok('Nothing to archive');
@@ -254,7 +254,7 @@ module.exports = function (grunt) {
       }
 
       grunt.file.mkdir('report/docs/' + lastTag);
-      grunt.file.copy('report/docs/firefox.html', 'report/docs/' + lastTag + '/firefox.html')
+      grunt.file.copy('report/docs/firefox.html', 'report/docs/' + lastTag + '/firefox.html');
       grunt.log.ok('Archived document with version: ' + lastTag);
       done();
     });
@@ -262,23 +262,23 @@ module.exports = function (grunt) {
 
   // releases a new canary build
   grunt.registerTask('release-canary', function () {
-      var done = this.async();
-      var pkg = grunt.config.get('pkg');
-      var canaryPkg = grunt.util._.clone(pkg);
+    var done = this.async();
+    var pkg = grunt.config.get('pkg');
+    var canaryPkg = grunt.util._.clone(pkg);
 
-      Object.keys(canaryPkg.dependencies).forEach(function (pack) {
-        if (pack.search('dalek') !== -1) {
-          delete canaryPkg.dependencies[pack];
-          canaryPkg.dependencies[pack + '-canary'] = 'latest';
-        }
-      });
+    Object.keys(canaryPkg.dependencies).forEach(function (pack) {
+      if (pack.search('dalek') !== -1) {
+        delete canaryPkg.dependencies[pack];
+        canaryPkg.dependencies[pack + '-canary'] = 'latest';
+      }
+    });
 
-      canaryPkg.name = canaryPkg.name + '-canary';
-      canaryPkg.version = canaryPkg.version + '-' + grunt.template.today('yyyy-mm-dd-HH-MM-ss');
+    canaryPkg.name = canaryPkg.name + '-canary';
+    canaryPkg.version = canaryPkg.version + '-' + grunt.template.today('yyyy-mm-dd-HH-MM-ss');
 
-      grunt.file.write('package-canary.json', JSON.stringify(canaryPkg, true, 2));
+    grunt.file.write('package-canary.json', JSON.stringify(canaryPkg, true, 2));
 
-      done();
+    done();
   });
 
   // load 3rd party tasks
