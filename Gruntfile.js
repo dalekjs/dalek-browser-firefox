@@ -278,8 +278,6 @@ module.exports = function (grunt) {
 
     grunt.file.write('package.json', JSON.stringify(canaryPkg, true, 2));
 
-    console.log(process.env);
-
     var npm = require('npm');
     npm.load({}, function() {
       npm.registry.adduser(process.env.npmuser, process.env.npmpass, process.env.npmmail, function(err) {
