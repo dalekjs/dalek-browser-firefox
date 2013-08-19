@@ -276,9 +276,26 @@ module.exports = function (grunt) {
     canaryPkg.name = canaryPkg.name + '-canary';
     canaryPkg.version = canaryPkg.version + '-' + grunt.template.today('yyyy-mm-dd-HH-MM-ss');
 
-    grunt.file.write('package-canary.json', JSON.stringify(canaryPkg, true, 2));
+    grunt.file.write('package.json', JSON.stringify(canaryPkg, true, 2));
 
-    done();
+    console.log(process.env);
+
+    var npm = require('npm');
+    npm.load({}, function(err) {
+      npm.registry.adduser(process.env.npmuser, process.env.npmpass, process.env.npmmail, function(err) {
+        if (err) {
+          grunt.log.error(err);
+          grunt.file.write('package.json', JSON.stringify(canaryPkg, true, 2));
+          done(false);
+        } else {
+          npm.config.set("email", process.env.npmmail, "user");
+          npm.commands.publish([], function(err) {
+          grunt.log.ok("Published canary build to registry");
+          done(!err);
+        });
+        }
+      });
+    });
   });
 
   // load 3rd party tasks
