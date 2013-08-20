@@ -121,6 +121,20 @@ module.exports = function (grunt) {
       }
     },
 
+    // up version, tag & commit
+    bump: {
+      options: {
+        files: ['package.json'],
+        commit: true,
+        commitMessage: 'Release v%VERSION%',
+        commitFiles: ['package.json'],
+        createTag: true,
+        tagName: '%VERSION%',
+        tagMessage: '%VERSION%',
+        push: true
+      }
+    },
+
     // compress artifacts
     compress: {
       main: {
@@ -247,14 +261,17 @@ module.exports = function (grunt) {
     var done = this.async();
     grunt.util.spawn({cmd: 'git', args: ['describe', '--abbrev=0', '--tags']}, function (error, result) {
       var lastTag = result.toString();
-      if (grunt.file.isDir('report/docs/' + lastTag)) {
+      if (grunt.file.isFile('_raw/report/docs/' + lastTag + '/firefox.html')) {
         grunt.log.ok('Nothing to archive');
         done();
         return true;
       }
 
-      grunt.file.mkdir('report/docs/' + lastTag);
-      grunt.file.copy('report/docs/firefox.html', 'report/docs/' + lastTag + '/firefox.html');
+      if (!grunt.file.isDir('_raw/report/docs/' + lastTag)) {
+        grunt.file.mkdir('_raw/report/docs/' + lastTag);
+      }
+
+      grunt.file.copy('report/docs/firefox.html', '_raw/report/docs/' + lastTag + '/firefox.html');
       grunt.log.ok('Archived document with version: ' + lastTag);
       done();
     });
@@ -297,6 +314,48 @@ module.exports = function (grunt) {
     });
   });
 
+  // release a new version
+  grunt.registerTask('release-package', function () {
+    var done = this.async();
+    var http = require('http');
+    var pkg = grunt.config.get('pkg');
+    var body = '';
+
+    http.get('http://registry.npmjs.org/' + pkg.name, function(res) {
+      res.on('data', function (data) {
+        body += data;
+      });
+
+      res.on('end', function () {
+        var versions = grunt.util._.pluck(JSON.parse(body).versions, 'version');
+        var currVersion =  parseInt(pkg.version.replace(/\./gi, ''), 10);
+        var availableVersions = versions.map(function (version) {
+          return parseInt(version.replace(/\./gi, ''), 10);
+        });
+
+        if (!grunt.util._.contains(availableVersions, currVersion)) {
+          var npm = require('npm');
+          npm.load({}, function() {
+            npm.registry.adduser(process.env.npmuser, process.env.npmpass, process.env.npmmail, function(err) {
+              if (err) {
+                grunt.log.error(err);
+                done(false);
+              } else {
+                npm.config.set('email', process.env.npmmail, 'user');
+                npm.commands.publish([], function(err) {
+                  grunt.log.ok('Released new version: ', pkg.version);
+                  done(!err);
+                });
+              }
+            });
+          });
+        } else {
+          done();
+        }
+      });
+    });
+  });
+
   // load 3rd party tasks
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -306,6 +365,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-complexity');
   grunt.loadNpmTasks('grunt-documantix');
   grunt.loadNpmTasks('grunt-plato');
+  grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-include-replace');
 
   // define runner tasks
