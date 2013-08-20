@@ -261,7 +261,7 @@ module.exports = function (grunt) {
     var done = this.async();
     grunt.util.spawn({cmd: 'git', args: ['describe', '--abbrev=0', '--tags']}, function (error, result) {
       var lastTag = result.toString();
-      if (grunt.file.isFile('_raw/report/docs/' + lastTag + '/firefox.html')) {
+      if (grunt.file.isFile('_raw/docs/' + lastTag + '/firefox.html')) {
         grunt.log.ok('Nothing to archive');
         done();
         return true;
