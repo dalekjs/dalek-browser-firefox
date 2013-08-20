@@ -267,6 +267,8 @@ module.exports = function (grunt) {
         return true;
       }
 
+      console.log('IS FILE', grunt.file.isFile('_raw/report/docs/' + lastTag + '/firefox.html'));
+
       if (!grunt.file.isDir('_raw/report/docs/' + lastTag)) {
         grunt.file.mkdir('_raw/report/docs/' + lastTag);
       }
