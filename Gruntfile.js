@@ -267,13 +267,11 @@ module.exports = function (grunt) {
         return true;
       }
 
-      console.log('IS FILE', grunt.file.isFile('_raw/report/docs/' + lastTag + '/firefox.html'));
-
-      if (!grunt.file.isDir('_raw/report/docs/' + lastTag)) {
-        grunt.file.mkdir('_raw/report/docs/' + lastTag);
+      if (!grunt.file.isDir('_raw/docs/' + lastTag)) {
+        grunt.file.mkdir('_raw/docs/' + lastTag);
       }
 
-      grunt.file.copy('report/docs/firefox.html', '_raw/report/docs/' + lastTag + '/firefox.html');
+      grunt.file.copy('report/docs/firefox.html', '_raw/docs/' + lastTag + '/firefox.html');
       grunt.log.ok('Archived document with version: ' + lastTag);
       done();
     });
