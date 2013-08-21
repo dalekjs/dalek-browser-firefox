@@ -356,6 +356,16 @@ module.exports = function (grunt) {
     });
   });
 
+  // generate AUTHORS.md file
+  grunt.registerTask('authors', function () {
+    var done = this.async();
+    grunt.util.spawn({cmd: 'git', args: ['shortlog']}, function (error, result) {
+      var authorsRaw = result.toString();
+      console.log(authorsRaw);
+      done();
+    });
+  });
+
   // load 3rd party tasks
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -367,6 +377,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-plato');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-include-replace');
+  grunt.loadNpmTasks('grunt-conventional-changelog');
 
   // define runner tasks
   grunt.registerTask('lint', 'jshint');

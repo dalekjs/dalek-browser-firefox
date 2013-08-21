@@ -165,7 +165,7 @@ var FirefoxDriver = {
   defaultBinaries: {
     linux: which('firefox'),
     darwin: process.env.HOME + '/Applications/FirefoxNightlyDebug.app/Contents/MacOS/firefox-bin',
-    win32: process.env.ProgramFiles + '\\NightlyDebug\\firefox.exe'
+    win32: process.env.ProgramFiles + '\\Nightly\\firefox.exe'
   },
 
   /**
@@ -322,8 +322,17 @@ var FirefoxDriver = {
     var df = Q.defer();
 
     // start the browser, grep its output
-    this.spawned = spawn(this.binary, ['-marionette', '-P', profileName]);
-    this.spawned.stdout.on('data', this._onBrowserStartup.bind(this, df));
+    this.spawned = spawn(this.binary, ['-marionette', '-console', '-P', profileName]);
+
+    // kind of an ugly hack, but I have no other idea to
+    // than to wait for 2 secs to ensure firefox runs on windows
+    if (process.platform === 'win32') {
+      setTimeout(function () {
+        df.resolve();
+      }, 2000);
+    } else {
+      this.spawned.stdout.on('data', this._onBrowserStartup.bind(this, df));
+    }
 
     // connect to the marionette socket server
     // and the webdriver server & resolve the promise when done
