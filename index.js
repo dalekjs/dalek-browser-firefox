@@ -62,11 +62,11 @@ var WebDriverServer = require('./lib/webdriver');
  * Because of the availability of the Firefox Marionette testing framework,
  * Dalek atm. can only drive the Firefox Nightly Debug builds.
  *
- * You can get them from Mozillas FTP server, for example the one from the 16th August [http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/08/2013-08-16-mozilla-central-debug/](http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/06/2013-06-18-mozilla-central-debug/)
+ * You can get them from Mozillaʼs FTP server, for example the one from the 16th August [http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/08/2013-08-16-mozilla-central-debug/](http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/06/2013-06-18-mozilla-central-debug/)
  *
  * Dalek looks for the browser in the std. installation directory, if you installed the
  * browser in a different place, you can add the location of the browser executable to you Dalekfile,
- * because Dalek isn't capable of finding the executable yet on its own.
+ * because Dalek isnʼt capable of finding the executable yet on its own.
  *
  * ```javascript
  * "browsers": [{
@@ -76,8 +76,8 @@ var WebDriverServer = require('./lib/webdriver');
  * }]
  * ```
  *
- * The Firefox plugin only implements a subset of Daleks Assertions & Actions, so if you run into any bugs,
- * the issue is most probably related to missing commands.
+ * The Firefox plugin only implements a subset of Dalekʼs assertions & actions,
+ * so if you run into any bugs, the issue is most probably related to missing commands.
  * Please report any issues you find, Thank you :)
  *
  * @module DalekJS
@@ -101,7 +101,7 @@ var FirefoxDriver = {
 
   /**
    * Default port of the FirefoxWebDriverServer
-   * The port may change, cause the port conflict resultion
+   * The port may change, cause the port conflict resolution
    * tool might pick another one, if the default one is blocked
    *
    * @property port
@@ -113,7 +113,7 @@ var FirefoxDriver = {
 
   /**
    * Default port of the Marionette TCP service
-   * The port may change, cause the port conflict resultion
+   * The port may change, cause the port conflict resolution
    * tool might pick another one, if the default one is blocked
    *
    * @property marionettePort
@@ -125,7 +125,7 @@ var FirefoxDriver = {
 
   /**
    * Default host of the FirefoxWebDriverServer
-   * The host may be overriden with
+   * The host may be overridden with
    * a user configured value
    *
    * @property host
@@ -325,7 +325,7 @@ var FirefoxDriver = {
     this.spawned = spawn(this.binary, ['-marionette', '-console', '-P', profileName]);
 
     // kind of an ugly hack, but I have no other idea to
-    // than to wait for 2 secs to ensure firefox runs on windows
+    // than to wait for 2 secs to ensure Firefox runs on windows
     if (process.platform === 'win32') {
       setTimeout(function () {
         df.resolve();
@@ -370,7 +370,7 @@ var FirefoxDriver = {
   },
 
   /**
-   * Creates a new firefox profile
+   * Creates a new Firefox profile
    *
    * @method _createProfile
    * @return {Q.promise}
@@ -388,7 +388,7 @@ var FirefoxDriver = {
     ps.stderr.on('data', function (buf) { data += buf; });
 
     ps.on('exit', function (code) {
-      // reject the deferred when an error occured
+      // reject the deferred when an error occurred
       if (code !== 0) {
         deferred.reject(code, data);
       }
@@ -430,7 +430,7 @@ var FirefoxDriver = {
     // store the user preferences
     var file = path.join(profilePath, 'user.js');
     fs.writeFile(file, prefs, function (err) {
-      // reject the deferred when an error occured
+      // reject the deferred when an error occurred
       if (err !== null) {
         deferred.reject(err);
       }
@@ -470,7 +470,7 @@ var FirefoxDriver = {
         this.binary = userPath;
         deferred.resolve(userPath);
       } else {
-        // TODO: Use daleks super awesome not yet implemented error handler...
+        // TODO: Use Dalekʼs super awesome not yet implemented error handler …
         console.log('BINARY NOT FOUND:', userPath);
         process.exit();
         deferred.reject();
@@ -487,7 +487,7 @@ var FirefoxDriver = {
         this.binary = userPath;
         deferred.resolve(userPath);
       } else {
-        // TODO: Use daleks super awesome not yet implemented error handler...
+        // TODO: Use Dalekʼs super awesome not yet implemented error handler …
         console.log('BINARY NOT FOUND:', userPath);
         process.exit();
         deferred.reject();
@@ -499,7 +499,7 @@ var FirefoxDriver = {
         this.binary = userPath;
         deferred.resolve(userPath);
       } else {
-        // TODO: Use daleks super awesome not yet implemented error handler...
+        // TODO: Use Dalekʼs super awesome not yet implemented error handler …
         console.log('BINARY NOT FOUND:', userPath);
         process.exit();
         deferred.reject();
