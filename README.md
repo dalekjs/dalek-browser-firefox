@@ -49,20 +49,10 @@ $ dalek mytest.js -b firefox
 ```
 
 Because of the availability of the Firefox Marionette testing framework,
-Dalek atm. can only drive the Firefox Aurora Debug builds.
-
-You also have to add the location of the browser executable to you Dalekfile,
-because Dalek isn't capable of finding the executable yet on its own.
-
-```js
-  "browsers": [{
-    "firefox": {
-      "path": "~/Apps/FirefoxAuroraDebug.app/"
-    }
-  }]
-```
+Dalek atm. can only drive the Firefox Aurora Debug, Firefox Nightly & Firefox OS emulator builds.
 
 The Firefox plugin only implements a subset of Daleks Assertions & Actions, so if you run into any bugs, the issue is most probably related to missing commands.
+If so, please file an issue =)
 
 ## Help Is Just A Click Away
 
