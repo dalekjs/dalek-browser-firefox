@@ -9,7 +9,7 @@
     "rimraf": "~2.2.2",
     "q": "~0.9.7",
     "which": "~1.0.5",
-    "portscanner": "~0.1.3"    
+    "portscanner": "~0.1.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -22,10 +22,13 @@
     "grunt-plato": "~0.2.1",
     "grunt-documantix": "~0.0.3",
     "grunt-include-replace": "~1.1.0",
-    "grunt-conventional-changelog": "~1.0.0",    
+    "grunt-conventional-changelog": "~1.0.0",
     "grunt-bump": "~0.0.11",
     "blanket": "~1.1.5",
-    "chai": "~1.7.2"
+    "chai": "~1.7.2",
+    "load-grunt-tasks": "~0.1.0",
+    "time-grunt": "~0.1.1",
+    "grunt-concurrent": "~0.3.1"
   },
   "scripts": {
     "test": "grunt test"
