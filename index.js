@@ -33,6 +33,7 @@ var which = require('which').sync;
 var portscanner = require('portscanner');
 var spawn = require('child_process').spawn;
 var Events = require('events').EventEmitter;
+var Socket = require('net').Socket;
 
 // int. libs
 var Marionette = require('./lib/marionette');
@@ -606,13 +607,13 @@ var FirefoxDriver = {
       args = ['-marionette', '-turbo', '-profile', profilePath, '-no-remote', '-url', 'about:blank'];
     }
 
-    // start the browser, grep its output
+    // start the browser
     this.spawned = spawn(this.binary, args);
 
     // kind of an ugly hack, but I have no other idea to
     // than to wait for 2 secs to ensure Firefox runs on windows
     if (process.platform === 'win32' || (configuration && !configuration.type)) {
-      setTimeout(df.resolve, 2000);
+      this.interval = setInterval(this._scanMarionettePort.bind(this, df), 50);
     } else {
       this.spawned.stdout.on('data', this._onBrowserStartup.bind(this, df));
     }
@@ -620,6 +621,40 @@ var FirefoxDriver = {
     // connect to the marionette socket server
     // and the webdriver server & resolve the promise when done
     df.promise.then(this._resolvePort.bind(this, deferred, profileName));
+    return this;
+  },
+
+  /**
+   * Repeatadly checks the status of the marionette port
+   * 
+   * @method _scanMarionettePort
+   * @param {object} df Promise
+   * @private
+   * @chainable
+   */
+
+  _scanMarionettePort: function (df) {
+    portscanner.checkPortStatus(this.getMarionettePort(), this.getHost(), this._startByInterval.bind(this, df));
+    return this;
+  },
+
+  /**
+   * Checks if the browser is available by listening on the marionette socket
+   * 
+   * @method _startByInterval
+   * @param {object} df Promise
+   * @param {object} interval Reference to the portchecker interval
+   * @param {object|null} err Error or null
+   * @param {string} status Status of the marionette port
+   * @private
+   * @chainable
+   */
+
+  _startByInterval: function (df, err, status) {
+    if (status === 'open') {
+      clearInterval(this.interval);
+      df.resolve();
+    }
 
     return this;
   },
@@ -721,7 +756,7 @@ var FirefoxDriver = {
 
   _afterConnectionHasBeenEstablished: function (profileName, deferred) {
     // Due to the lack of firefox os readiness events, 
-    // we need to wait an addition second before reporting
+    // we need to wait an additional second before reporting
     // test readiness
     if (profileName === 'os') {
       setTimeout(deferred.resolve, 1000);
