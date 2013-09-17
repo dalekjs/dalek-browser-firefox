@@ -59,12 +59,7 @@ var WebDriverServer = require('./lib/webdriver');
  * ```bash
  * $ dalek mytest.js -b firefox
  * ```
- *
- * Because of the availability of the Firefox Marionette testing framework,
- * Dalek atm. can only drive the Firefox Nightly Debug builds.
- *
- * You can get them from Mozillaʼs FTP server, for example the one from the 16th August [http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/08/2013-08-16-mozilla-central-debug/](http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/2013/06/2013-06-18-mozilla-central-debug/)
- *
+ * 
  * Dalek looks for the browser in the std. installation directory, if you installed the
  * browser in a different place, you can add the location of the browser executable to you Dalekfile,
  * because Dalek isnʼt capable of finding the executable yet on its own.
@@ -103,7 +98,7 @@ var WebDriverServer = require('./lib/webdriver');
  * }
  * ```
  *
- * If you would like to test Aurora oder Firefox OS releases, you can simply apply a snd. argument,
+ * If you would like to test Nightly, Aurora oder Firefox OS releases, you can simply apply a snd. argument,
  * which defines the browser type:
  *
  * ```bash
@@ -252,7 +247,6 @@ var FirefoxDriver = {
 
   /**
    * Paths to the default Firefox binary files
-   * (Points to Nightly as long as Marionette isn't in std. Firefox)
    * 
    * @property defaultBinaries
    * @type object
@@ -260,8 +254,8 @@ var FirefoxDriver = {
 
   defaultBinaries: {
     linux: 'firefox',
-    darwin: '/Applications/FirefoxNightlyDebug.app/Contents/MacOS/firefox-bin',
-    win32: process.env.ProgramFiles + '\\Nightly\\firefox.exe'
+    darwin: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
+    win32: process.env.ProgramFiles + '\\Firefox\\firefox.exe'
   },
 
   /**
@@ -275,7 +269,7 @@ var FirefoxDriver = {
   browserTypes: {
 
     /**
-     * Nightly Firefox (Currently the default, as long as marionette is not in std. Firefox)
+     * Nightly Firefox
      *
      * @property nightly
      * @type object
@@ -388,9 +382,9 @@ var FirefoxDriver = {
    * Creates a user profile for the browser 
    *
    * @method launch
-   * @param {object} configuration 
-   * @param {EventEmitter2} events 
-   * @param {Dalek.Internal.Config} config 
+   * @param {object} configuration Browser configuration
+   * @param {EventEmitter2} events EventEmitter (Reporter Emitter instance)
+   * @param {Dalek.Internal.Config} config Dalek configuration class
    * @return {object} promise Browser promise
    */
 
@@ -491,7 +485,7 @@ var FirefoxDriver = {
     // when, create a profile, else, not
     if (configuration.type !== 'os') {
       Q.when(this._createProfile())
-       .then(this._afterDesktopBinaryFound.bind(this, deferred));
+       .then(this._afterDesktopBinaryFound.bind(this, deferred, configuration));
     } else {
       this._startBrowser(null, 'os', deferred);
     }
@@ -526,9 +520,8 @@ var FirefoxDriver = {
    * @private
    */
 
-  _afterDesktopBinaryFound: function (deferred, profile) {
-    this.profile = profile;
-    this._startBrowser(profile.path, profile.name, deferred);
+  _afterDesktopBinaryFound: function (deferred, configuration) {
+    this._startBrowser(this.profile.path, this.profile.name, deferred, configuration);
     return this;
   },
 
@@ -542,12 +535,12 @@ var FirefoxDriver = {
 
   _killProcess: function () {
     // kill the browser process itself
-    this.spawned.kill('SIGKILL');
+    this.spawned.kill('SIGTERM');
 
     // check if we need to clean up some created profiles
     // should always be the case except for Firefox OS
     if (this.profile && this.profile.path) {
-      this._cleanupProfiles();
+      rimraf.sync(this.profile.path);
     }
 
     return this;
@@ -604,13 +597,13 @@ var FirefoxDriver = {
    * @chainable
    */
 
-  _startBrowser: function (profilePath, profileName, deferred) {
+  _startBrowser: function (profilePath, profileName, deferred, configuration) {
     var df = Q.defer();
     var args = [];
 
     // set args based on environment
     if (profileName !== 'os') {
-      args = ['-marionette', '-console'];
+      args = ['-marionette', '-turbo', '-profile', profilePath, '-no-remote', '-url', 'about:blank'];
     }
 
     // start the browser, grep its output
@@ -618,7 +611,7 @@ var FirefoxDriver = {
 
     // kind of an ugly hack, but I have no other idea to
     // than to wait for 2 secs to ensure Firefox runs on windows
-    if (process.platform === 'win32') {
+    if (process.platform === 'win32' || (configuration && !configuration.type)) {
       setTimeout(df.resolve, 2000);
     } else {
       this.spawned.stdout.on('data', this._onBrowserStartup.bind(this, df));
@@ -787,45 +780,9 @@ var FirefoxDriver = {
   _createProfile: function () {
     var deferred = Q.defer();
     var profileName = 'dalekjs-' + Math.random().toString(16).slice(2);
-    var ps = spawn(this.binary, ['-CreateProfile', profileName]);
-    var data = {profile: ''};
-
-    // collect data from stdout/stderr & process it after the process finished
-    ps.stdout.on('data', function (buf) { data.profile += buf;});
-    ps.stderr.on('data', function (buf) { data.profile += buf;});
-    ps.on('exit', this._afterCreatingProfile.bind(this, deferred, data, profileName));
+    this._createUserPreferences(deferred, profileName);
 
     return deferred.promise;
-  },
-
-  /**
-   * Callback that will be executed after the profile has been created
-   * 
-   * @method _afterCreatingProfile
-   * @param {object} deferred Promise
-   * @param {string} data Data stream from thr console
-   * @param {string} profileName Name of the generated profile
-   * @param {integer} code Return code of the spawned browser binary
-   * @private
-   * @chainable
-   */
-
-  _afterCreatingProfile: function (deferred, data, profileName, code) {
-    // reject the deferred when an error occurred
-    if (code !== 0) {
-      deferred.reject(code, data.profile);
-    }
-
-    // grep the profile data
-    var m = data.profile.match(/Success: created profile '[^']+' at '([^']+)/);
-    var profilePath = path.join(path.dirname(m[1]));
-
-    // create the user preferences
-    var promise = this._createUserPreferences(profilePath, profileName);
-    Q.when(promise)
-     .then(deferred.resolve.bind(deferred, {path: profilePath, name: profileName}));
-
-    return this;
   },
 
   /**
@@ -838,20 +795,28 @@ var FirefoxDriver = {
    * @private
    */
 
-  _createUserPreferences: function (profilePath) {
-    var deferred = Q.defer();
-    var prefs = '';
-
+  _createUserPreferences: function (deferred, profileName) {
     // create marionette specific user preferences
-    prefs += 'user_pref("browser.shell.checkDefaultBrowser", false);\n';
+    var prefs = 'user_pref("browser.shell.checkDefaultBrowser", false);\n';
     prefs += 'user_pref("marionette.contentListener", false);\n';
     prefs += 'user_pref("marionette.defaultPrefs.enabled", true);\n';
+    prefs += 'user_pref("browser.shell.checkDefaultBrowser", false);\n';
+    prefs += 'user_pref("browser.sessionstore.resume_from_crash", false);\n';
+    prefs += 'user_pref("browser.bookmarks.restore_default_bookmarks", false);\n';
     prefs += 'user_pref("marionette.defaultPrefs.port", "' + this.getMarionettePort() + '");\n';
 
     // store the user preferences
-    var file = path.join(profilePath, 'user.js');
-    fs.writeFile(file, prefs, this._afterCreatingUserPreferences.bind(this, deferred));
+    this.profile = {};
+    this.profile.path = path.join(process.cwd(), 'temp');
+    this.profile.name = profileName;
 
+    // check if the temp dir exists, else create
+    if (!fs.existsSync(this.profile.path)) {
+      fs.mkdirSync(this.profile.path);
+    }
+
+    // create the preference file
+    fs.writeFile(path.join(this.profile.path, 'prefs.js'), prefs, this._afterCreatingUserPreferences.bind(this, deferred));
     return deferred.promise;
   },
 
@@ -867,7 +832,7 @@ var FirefoxDriver = {
    */
 
   _afterCreatingUserPreferences: function (deferred, err) {
-    // reject the deferred when an error occurred
+    // reject the deferred when an error occurrs
     if (err !== null) {
       this.reporterEvents.emit('error', 'dalek-browser-firefox: Error creating profile');
       deferred.reject(err);
@@ -875,47 +840,6 @@ var FirefoxDriver = {
     }
 
     deferred.resolve();
-    return this;
-  },
-
-  /**
-   * Cleans up any previously generated user profiles from dalek
-   *
-   * @method _cleanupProfiles
-   * @private
-   * @chainable
-   */
-
-  _cleanupProfiles: function () {
-    var currentProfile = path.basename(this.profile.path);
-    var profileDir = path.resolve(this.profile.path, '..');
-    var profileList = fs.readdirSync(profileDir);
-    
-    // iterate over the profiles & clean up
-    profileList.forEach(this._deleteProfile.bind(this, profileDir, currentProfile));
-    return this;
-  },
-
-  /**
-   * Cleans up the generated profiles from dalek
-   *
-   * @method _deleteProfile
-   * @param {string} profileDir Directory of the user profile
-   * @param {string} currentProfile Name of the current profile
-   * @param {object} profile Profile data object
-   * @private
-   * @chainable
-   */
-
-  _deleteProfile: function (profileDir, currentProfile, profile) {
-    if (profile.search('dalekjs') !== -1 && profile !== currentProfile) {
-      try {
-        rimraf.sync(profileDir + path.sep + profile);
-      } catch (e) {
-        this.reporterEvents.emit('error', 'dalek-browser-firefox: Profile: ' + profile + ' could not be cleaned up');
-      }
-    }
-
     return this;
   },
 
