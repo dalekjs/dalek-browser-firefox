@@ -33,7 +33,6 @@ var which = require('which').sync;
 var portscanner = require('portscanner');
 var spawn = require('child_process').spawn;
 var Events = require('events').EventEmitter;
-var Socket = require('net').Socket;
 
 // int. libs
 var Marionette = require('./lib/marionette');
