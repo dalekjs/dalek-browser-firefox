@@ -1,6 +1,6 @@
 {
   "name": "dalek-browser-firefox",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Firefox browser binding for DalekJS",
   "homepage": "http://dalekjs.com",
   "main": "./index.js",
