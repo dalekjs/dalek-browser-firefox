@@ -255,7 +255,7 @@ var FirefoxDriver = {
   defaultBinaries: {
     linux: 'firefox',
     darwin: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
-    win32: process.env.ProgramFiles + '\\Firefox\\firefox.exe'
+    win32: process.env.ProgramFiles + '\\Mozilla Firefox\\firefox.exe'
   },
 
   /**
