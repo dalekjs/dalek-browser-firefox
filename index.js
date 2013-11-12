@@ -253,7 +253,7 @@ var FirefoxDriver = {
    */
 
   defaultBinaries: {
-    linux: 'firefox',
+    default: 'firefox',
     darwin: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
     win32: process.env.ProgramFiles + '\\Mozilla Firefox\\firefox.exe'
   },
@@ -583,7 +583,7 @@ var FirefoxDriver = {
     var platform = process.platform;
     return this.defaultBinaries[platform] ?
       this.defaultBinaries[platform] :
-      which(this.defaultBinaries.linux);
+      which(this.defaultBinaries.default);
   },
 
   /**
