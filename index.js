@@ -256,6 +256,7 @@ var FirefoxDriver = {
     default: 'firefox',
     darwin: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
     win32: process.env.ProgramFiles + '\\Mozilla Firefox\\firefox.exe'
+	win64: process.env.ProgramFiles + ' (x86)\\Mozilla Firefox\\firefox.exe'
   },
 
   /**
@@ -581,6 +582,13 @@ var FirefoxDriver = {
 
   _getDefaultBinary: function () {
     var platform = process.platform;
+
+	// check to see if we are on Windows x64
+	if (platform === "win32" && process.arch === "x64")
+	{
+		platform = "win64";
+	}
+	
     return this.defaultBinaries[platform] ?
       this.defaultBinaries[platform] :
       which(this.defaultBinaries.default);
