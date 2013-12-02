@@ -256,7 +256,7 @@ var FirefoxDriver = {
     default: 'firefox',
     darwin: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
     win32: process.env.ProgramFiles + '\\Mozilla Firefox\\firefox.exe'
-	win64: process.env.ProgramFiles + ' (x86)\\Mozilla Firefox\\firefox.exe'
+	win64: process.env["ProgramFiles(x86)"] + '\\Mozilla Firefox\\firefox.exe'
   },
 
   /**
