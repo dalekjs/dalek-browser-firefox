@@ -253,9 +253,10 @@ var FirefoxDriver = {
    */
 
   defaultBinaries: {
-    linux: 'firefox',
+    default: 'firefox',
     darwin: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
-    win32: process.env.ProgramFiles + '\\Mozilla Firefox\\firefox.exe'
+    win32: process.env.ProgramFiles + '\\Mozilla Firefox\\firefox.exe',
+    win64: process.env['ProgramFiles(x86)'] + '\\Mozilla Firefox\\firefox.exe'
   },
 
   /**
@@ -279,7 +280,8 @@ var FirefoxDriver = {
       name: 'Firefox Nightly',
       linux: 'firefox',
       darwin: '/Applications/FirefoxNightlyDebug.app/Contents/MacOS/firefox-bin',
-      win32: process.env.ProgramFiles + '\\Nightly\\firefox.exe'
+      win32: process.env.ProgramFiles + '\\Nightly\\firefox.exe',
+      win64: process.env['ProgramFiles(x86)'] + '\\Mozilla Firefox Nightly\\firefox.exe'
     },
 
     /**
@@ -293,7 +295,8 @@ var FirefoxDriver = {
       name: 'Firefox Aurora',
       linux: 'firefox',
       darwin: '/Applications/FirefoxAuroraDebug.app/Contents/MacOS/firefox-bin',
-      win32: process.env.ProgramFiles + '\\AuroraDebug\\firefox.exe'
+      win32: process.env.ProgramFiles + '\\AuroraDebug\\firefox.exe',
+      win64: process.env['ProgramFiles(x86)'] + '\\Mozilla AuroraDebug\\firefox.exe'
     },
 
     /**
@@ -307,7 +310,8 @@ var FirefoxDriver = {
       name: 'Firefox OS',
       linux: 'b2g',
       darwin: '/Applications/B2G.app/Contents/MacOS/b2g',
-      win32: process.env.ProgramFiles + '\\B2G\\b2g.exe'
+      win32: process.env.ProgramFiles + '\\B2G\\b2g.exe',
+      win64: process.env.ProgramFiles + '\\B2G\\b2g.exe'
     }
   },
 
@@ -587,9 +591,14 @@ var FirefoxDriver = {
       return which(this.defaultBinaries.linux);
     }
 
+    // check to see if we are on Windows x64
+    if (platform === 'win32' && process.arch === 'x64') {
+      platform = 'win64';
+    }
+	
     return this.defaultBinaries[platform] ?
       this.defaultBinaries[platform] :
-      which(this.defaultBinaries.linux);
+      which(this.defaultBinaries.default);
   },
 
   /**
