@@ -581,6 +581,12 @@ var FirefoxDriver = {
 
   _getDefaultBinary: function () {
     var platform = process.platform;
+
+    // check default binary for linuy
+    if (platform !== 'darwin' && platform !== 'win32' && this.defaultBinaries[platform]) {
+      return which(this.defaultBinaries.linux);
+    }
+
     return this.defaultBinaries[platform] ?
       this.defaultBinaries[platform] :
       which(this.defaultBinaries.linux);
