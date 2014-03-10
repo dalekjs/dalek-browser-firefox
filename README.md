@@ -10,7 +10,7 @@ dalek-browser-firefox
 [![NPM version](https://badge.fury.io/js/dalek-browser-firefox.png)](http://badge.fury.io/js/dalek-browser-firefox)
 [![Coverage](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/coverage.png)](http://dalekjs.com/package/dalek-browser-firefox/master/coverage/index.html)
 [![unstable](https://rawgithub.com/hughsk/stability-badges/master/dist/unstable.svg)](http://github.com/hughsk/stability-badges)
-[![Stories in Ready](https://badge.waffle.io/dalekjs/dalek-browser-firefox.png?label=ready)](https://waffle.io/dalekjs/dalek)
+[![Stories in Ready](https://badge.waffle.io/dalekjs/dalek-browser-firefox.png?label=ready)](https://waffle.io/dalekjs/dalek-browser-firefox)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dalekjs/dalek-browser-firefox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
