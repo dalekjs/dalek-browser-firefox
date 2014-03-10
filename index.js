@@ -736,7 +736,7 @@ var FirefoxDriver = {
 
   _afterPortResolved: function (deferred, profileName, error, port) {
     // check for errors
-    if (error !== null) {
+    if (error !== null && error.code !== 'ECONNREFUSED') {
       this.reporterEvents.emit('error', 'dalek-browser-firefox: Error starting WebDriverServer, port ' + port + ' in use');
       deferred.reject(error);
       process.exit();
