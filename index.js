@@ -81,21 +81,21 @@ var WebDriverServer = require('./lib/webdriver');
  * You can specifiy a different port from within your [Dalekfile](/pages/config.html) like so:
  *
  * ```javascript
- * "browsers": {
+ * "browsers": [{
  *   "firefox": {
  *     "port": 5555 
  *   }
- * }
+ * }]
  * ```
  *
  * It is also possible to specify a range of ports:
  *
  * ```javascript
- * "browsers": {
+ * "browsers": [{
  *   "firefox": {
  *     "portRange": [6100, 6120] 
  *   }
- * }
+ * }]
  * ```
  *
  * If you would like to test Nightly, Aurora oder Firefox OS releases, you can simply apply a snd. argument,
@@ -116,21 +116,21 @@ var WebDriverServer = require('./lib/webdriver');
  * its location in your [Dalekfile](/pages/config.html):
  *
  * ```javascript
- * "browsers": {
+ * "browsers": [{
  *   "firefox": {
  *     "binary": "/Applications/Custom Located Firefox.app/MacOS/Contents/firefox-bin" 
  *   }
- * }
+ * }]
  * ```
  *
  * This also works for the aurora &amp; Firefox OS builds
  *
  * ```javascript
- * "browsers": {
+ * "browsers": [{
  *   "firefox:aurora": {
  *     "binary": "/Applications/Custom Located Firefox Aurora.app/MacOS/Contents/firefox-bin" 
  *   }
- * }
+ * }]
  * ```
  *
  * @module DalekJS
